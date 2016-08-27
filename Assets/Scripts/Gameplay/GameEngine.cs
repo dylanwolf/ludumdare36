@@ -18,10 +18,10 @@ public class GameEngine : MonoBehaviour {
 
     public static LevelTile[,] DEMO_LEVEL = new LevelTile[,]
     {
-        { LevelTile.Empty, LevelTile.Empty, LevelTile.Block, LevelTile.Empty, LevelTile.Empty,  },
-        { LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty,  },
-        { LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty,  },
-        { LevelTile.Engine, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty,  },
+        { LevelTile.Empty, LevelTile.Empty, LevelTile.Block, LevelTile.LightGoal, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty },
+        { LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty },
+        { LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty },
+        { LevelTile.Engine, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty },
     };
 
     #region Setup
@@ -60,9 +60,13 @@ public class GameEngine : MonoBehaviour {
     public const string BLOCK_POOL = "Blocks";
     public const string GENERATOR_POOL = "Generators";
     public const string REPEATER_POOL = "Repeaters";
+    public const string LASER_POOL = "Lasers";
+    public const string LIGHT_GOAL_POOL = "LightGoals";
+    public const string MIRROR_POOL = "Mirrors";
 
     void BuildLevel(LevelTile[,] level)
     {
+        GameState.WinConditions.Clear();
         GameState.LevelHeight = GameState.Tiles.GetLength(0);
         GameState.LevelWidth = GameState.Tiles.GetLength(1);
 
@@ -97,6 +101,12 @@ public class GameEngine : MonoBehaviour {
                     case LevelTile.Repeater:
                         CreateDevice(REPEATER_POOL, x, y);
                         break;
+                    case LevelTile.Laser:
+                        CreateDevice(LASER_POOL, x, y);
+                        break;
+                    case LevelTile.LightGoal:
+                        CreateDevice(LIGHT_GOAL_POOL, x, y);
+                        break;
                 }
             }
         }
@@ -114,6 +124,9 @@ public class GameEngine : MonoBehaviour {
         GameState.Devices[y, x] = dev;
         dev.TileX = x;
         dev.TileY = y;
+
+        if (dev.IsWinCondition)
+            GameState.WinConditions.Add(dev);
     }
     #endregion
 
@@ -154,6 +167,22 @@ public class GameEngine : MonoBehaviour {
                 if (GameState.Devices[y, x] != null)
                     GameState.Devices[y, x].CleanupAfterTick();
             }
+        }
+
+        if (GameState.WinConditions.Count > 0)
+        {
+            bool hasWon = true;
+            for (int i = 0; i < GameState.WinConditions.Count; i++)
+            {
+                if (!GameState.WinConditions[i].HasSetWinCondition)
+                {
+                    hasWon = false;
+                    break;
+                }
+            }
+
+            if (hasWon)
+                WonGame();
         }
     }
 
@@ -203,6 +232,14 @@ public class GameEngine : MonoBehaviour {
             if (GameState.Devices[y,x] == null)
                 CreateDevice(GameState.EditorSelection, x, y);
         }
+    }
+    #endregion
+
+    #region WinState
+    public void WonGame()
+    {
+        GameState.Mode = GameMode.Won;
+        Debug.Log("Won game!");
     }
     #endregion
 }

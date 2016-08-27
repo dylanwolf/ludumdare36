@@ -27,7 +27,7 @@ public class RepeaterDevice : GameDevice {
 
     protected override void ApplyPowerInternal(GameDevice device)
     {
-        base.ApplyCrankInternal(device);
+        base.ApplyPowerInternal(device);
         GameEngine.Current.Power(this, TileX - 1, TileY);
         GameEngine.Current.Power(this, TileX + 1, TileY);
         GameEngine.Current.Power(this, TileX, TileY - 1);

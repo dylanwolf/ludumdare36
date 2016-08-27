@@ -8,7 +8,9 @@ public enum LevelTile
     Engine = 2,
     Gear = 3,
     Generator = 4,
-    Repeater = 5
+    Repeater = 5,
+    Laser = 6,
+    LightGoal = 7
 }
 
 public enum DeviceAnimation
@@ -21,5 +23,6 @@ public enum DeviceAnimation
 
 public enum GameMode
 {
-    Playing = 0
+    Playing = 0,
+    Won = 1
 }

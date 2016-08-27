@@ -27,4 +27,14 @@ public class ToolSelector : MonoBehaviour {
     {
         GameEngine.Current.SelectTool(GameEngine.REPEATER_POOL);
     }
+
+    public void LaserTool()
+    {
+        GameEngine.Current.SelectTool(GameEngine.LASER_POOL);
+    }
+
+    public void MirrorTool()
+    {
+        GameEngine.Current.SelectTool(GameEngine.MIRROR_POOL);
+    }
 }

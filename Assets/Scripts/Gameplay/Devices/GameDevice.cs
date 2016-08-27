@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 public abstract class GameDevice : MonoBehaviour, IObjectPoolable {
 
+    public virtual bool HasSetWinCondition { get { return false; } }
+    public virtual bool IsWinCondition { get { return false; } }
+    public virtual bool BlocksLaser {  get { return true; } }
+
     public int TileX;
     public int TileY;
 
@@ -22,7 +26,7 @@ public abstract class GameDevice : MonoBehaviour, IObjectPoolable {
 
     protected SpriteRenderer _r;
 
-    void Start()
+    protected virtual void Start()
     {
         _r = GetComponent<SpriteRenderer>();
     }
@@ -76,6 +80,8 @@ public abstract class GameDevice : MonoBehaviour, IObjectPoolable {
         PoweredBy.Clear();
         CrankedBy.Clear();
         LitBy.Clear();
+
+        ResetTickStateInternal();
     }
 
     public void Tick()
@@ -117,7 +123,17 @@ public abstract class GameDevice : MonoBehaviour, IObjectPoolable {
     }
 
     public void ApplyLight(GameDevice device) {
-        throw new System.NotImplementedException();
+        Debug.Log(this.GetType().Name + " Can Light: " + CanLight.ToString());
+        if (CanLight)
+        {
+            LitBy.Add(device);
+
+            if (!HasLitThisTick)
+            {
+                HasLitThisTick = true;
+                ApplyLightInternal(device);
+            }
+        }
     }
 
     protected virtual void ApplyPowerInternal(GameDevice device)
@@ -131,7 +147,7 @@ public abstract class GameDevice : MonoBehaviour, IObjectPoolable {
 
     protected virtual void ApplyLightInternal(GameDevice device)
     {
-        throw new System.NotImplementedException();
+        
     }
 
     protected virtual bool CanPower { get { return false; } }

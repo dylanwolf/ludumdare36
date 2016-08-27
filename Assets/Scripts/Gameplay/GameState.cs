@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public static class GameState {
 
@@ -13,4 +14,5 @@ public static class GameState {
 
     public static Tile[,] Tiles;
     public static GameDevice[,] Devices;
+    public static List<GameDevice> WinConditions = new List<GameDevice>();
 }

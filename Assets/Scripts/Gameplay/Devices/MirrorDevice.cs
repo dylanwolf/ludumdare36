@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LaserDevice : GameDevice {
+public class MirrorDevice : GameDevice {
 
     public BeamDevice[] beams = new BeamDevice[4];
     public bool[] beamsOn = new bool[4];
@@ -11,7 +11,7 @@ public class LaserDevice : GameDevice {
     public Sprite ActiveSprite;
     public Sprite InactiveSprite;
 
-    protected override bool CanPower
+    protected override bool CanLight
     {
         get { return true; }
     }
@@ -102,22 +102,25 @@ public class LaserDevice : GameDevice {
         }
     }
 
-    protected override void ApplyPowerInternal(GameDevice device)
+    protected override void ApplyLightInternal(GameDevice device)
     {
-        base.ApplyPowerInternal(device);
-        HasPoweredThisTick = false;
+        base.ApplyLightInternal(device);
+        HasLitThisTick = false;
 
         // beam 0 = 1,0
-        if (device.TileX == TileX - 1 && device.TileY == TileY)
-            beamsOn[0] = true;
         // beam 1 = -1,0
-        else if (device.TileX == TileX + 1 && device.TileY == TileY)
-            beamsOn[1] = true;
         // beam 2 = 0, -1
-        else if (device.TileX == TileX && device.TileY == TileY + 1)
-            beamsOn[2] = true;
         // beam 3 = 0, 1
-        else if (device.TileX == TileX && device.TileY == TileY - 1)
+
+        if ((device.TileX == TileX - 1 || device.TileX == TileX + 1) && device.TileY == TileY)
+        {
+            beamsOn[2] = true;
             beamsOn[3] = true;
+        }
+        else if ((device.TileY == TileY - 1 || device.TileY == TileY + 1) && device.TileX == TileX)
+        {
+            beamsOn[0] = true;
+            beamsOn[1] = true;
+        }
     }
 }

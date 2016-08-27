@@ -35,10 +35,10 @@ public abstract class GameDevice : MonoBehaviour, IObjectPoolable {
         }
     }
 
-    void Update()
+    protected virtual void Update()
     {
         if (_r != null)
-            _r.sortingOrder = TileY;
+            _r.sortingOrder = TileY * 10;
     }
 
     public virtual void Disable()

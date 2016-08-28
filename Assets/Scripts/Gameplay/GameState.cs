@@ -32,7 +32,7 @@ public static class GameState {
     }
 
 
-    public static int LevelIndex = 7;
+    public static int LevelIndex = 0;
 
     public static Level[] LEVELS = new Level[]
     {

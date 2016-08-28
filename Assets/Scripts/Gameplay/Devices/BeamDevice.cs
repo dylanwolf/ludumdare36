@@ -14,6 +14,7 @@ public class BeamDevice : GameDevice {
 
     public Transform EndpointPivots;
     public Transform LaserEnd;
+    Transform LaserStart;
 
     Transform scaleTransform;
     Transform spriteTransform;
@@ -29,6 +30,7 @@ public class BeamDevice : GameDevice {
     protected override void Start()
     {
         base.Start();
+        LaserStart = StartSprite.transform;
         Initialize();
     }
 
@@ -71,10 +73,10 @@ public class BeamDevice : GameDevice {
         Direction[0] = x;
         Direction[1] = y;
 
-        SetLayer(_r, (TileY * 10) + 1);
-        SetLayer(StartSprite, (TileY * 10) + 2);
-        SetLayer(BeamSprite, (TileY * 10) + 1);
-        SetLayer(EndSprite, (TileY * 10) + 2);
+        SetLayer(_r, (TileY * 10) + 5);
+        SetLayer(StartSprite, (TileY * 10) + 6);
+        SetLayer(BeamSprite, (TileY * 10) + 5);
+        SetLayer(EndSprite, (TileY * 10) + 6);
 
         if (y == 0)
         {
@@ -101,7 +103,6 @@ public class BeamDevice : GameDevice {
         SetScaleX(
             (blocksLength *
                 (((Direction[0] != 0) ? GameEngine.TileSize.x : GameEngine.TileSize.y) / SPRITE_SIZE))
-                //- scaleTransform.localPosition.x
         );
 
         if (pivotTransform != null && LaserEnd != null && scaleTransform != null && spriteTransform != null)
@@ -134,6 +135,13 @@ public class BeamDevice : GameDevice {
         tmpScale = scaleTransform.localScale;
         tmpScale.y = scaleY;
         scaleTransform.localScale = tmpScale;
+
+        if (LaserStart != null)
+        {
+            tmpScale = LaserStart.localScale;
+            tmpScale.y = scaleY;
+            LaserStart.localScale = tmpScale;
+        }
     }
 
     protected override void ResetTickStateInternal()

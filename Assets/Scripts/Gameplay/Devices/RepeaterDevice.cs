@@ -8,11 +8,24 @@ public class RepeaterDevice : GameDevice {
         get { return true; }
     }
 
-    public Sprite ActiveSprite;
-    public Sprite InactiveSprite;
+    Animator _anim;
+
+    void Awake()
+    {
+        _anim = GetComponent<Animator>();
+    }
+
+    bool applyPower = false;
+
+    public override void Initialize()
+    {
+        base.Initialize();
+        applyPower = false;
+    }
 
     protected override void ResetTickStateInternal()
     {
+        applyPower = false;
     }
 
     protected override void TickInternal()
@@ -21,8 +34,16 @@ public class RepeaterDevice : GameDevice {
 
     protected override void CleanupAfterTickInternal()
     {
-        if (_r != null)
-            _r.sprite = (PoweredBy.Count > 0) ? ActiveSprite : InactiveSprite;
+        ApplyAnimation();
+    }
+
+    const string ANIM_RUNNING = "IsRunning";
+    void ApplyAnimation()
+    {
+        if (_anim != null)
+        {
+            _anim.SetBool(ANIM_RUNNING, applyPower);
+        }
     }
 
     protected override void ApplyPowerInternal(GameDevice device)
@@ -32,5 +53,6 @@ public class RepeaterDevice : GameDevice {
         GameEngine.Current.Power(this, TileX + 1, TileY);
         GameEngine.Current.Power(this, TileX, TileY - 1);
         GameEngine.Current.Power(this, TileX, TileY + 1);
+        applyPower = true;
     }
 }

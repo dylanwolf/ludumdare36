@@ -32,7 +32,7 @@ public static class GameState {
     }
 
 
-    public static int LevelIndex = 0;
+    public static int LevelIndex = 7;
 
     public static Level[] LEVELS = new Level[]
     {
@@ -166,11 +166,11 @@ public static class GameState {
             Name = "Open The Way",
             Board = new LevelTile[,]
             {
-                { LevelTile.Empty, LevelTile.Empty, LevelTile.LightSwitch, LevelTile.Empty, LevelTile.Empty },
-                { LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty },
-                { LevelTile.Engine, LevelTile.Empty, LevelTile.Empty, LevelTile.Door, LevelTile.LightGoal },
-                { LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty },
-                { LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty },
+                { LevelTile.Empty, LevelTile.Empty, LevelTile.LightSwitch, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty },
+                { LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty },
+                { LevelTile.Engine, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Door, LevelTile.Empty, LevelTile.LightGoal },
+                { LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty },
+                { LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty },
             },
             Parts = new Dictionary<string, int>()
             {
@@ -180,7 +180,7 @@ public static class GameState {
             },
             Switches = new SwitchAssociation[]
             {
-                new SwitchAssociation() { Switch = new int[] { 0, 2 }, Target = new int[] { 2, 3 } }
+                new SwitchAssociation() { Switch = new int[] { 0, 2 }, Target = new int[] { 2, 4 } }
             }
         },
     };

@@ -8,6 +8,8 @@ public abstract class GameDevice : MonoBehaviour, IObjectPoolable {
     public virtual bool IsWinCondition { get { return false; } }
     public virtual bool BlocksLaser {  get { return true; } }
 
+    public SpriteRenderer[] ImageStack;
+
     public int TileX;
     public int TileY;
 
@@ -43,6 +45,7 @@ public abstract class GameDevice : MonoBehaviour, IObjectPoolable {
             _r.enabled = true;
         }
 
+        OrderSprites();
         SwitchX = null;
         SwitchY = null;
     }
@@ -82,6 +85,8 @@ public abstract class GameDevice : MonoBehaviour, IObjectPoolable {
 
     public void ResetTickState()
     {
+        OrderSprites();
+
         HasCrankedThisTick = false;
         HasPoweredThisTick = false;
         HasLitThisTick = false;
@@ -90,8 +95,20 @@ public abstract class GameDevice : MonoBehaviour, IObjectPoolable {
         PoweredBy.Clear();
         CrankedBy.Clear();
         LitBy.Clear();
+        SwitchedBy.Clear();
 
         ResetTickStateInternal();
+    }
+
+    void OrderSprites()
+    {
+        if (_r != null && ImageStack != null)
+        {
+            for (int i = 0; i < ImageStack.Length; i++)
+            {
+                ImageStack[i].sortingOrder = _r.sortingOrder + i + 1;
+            }
+        }
     }
 
     public void Tick()

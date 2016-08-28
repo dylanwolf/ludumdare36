@@ -8,9 +8,6 @@ public class LaserDevice : GameDevice {
 
     public Transform BeamAttach;
 
-    public Sprite ActiveSprite;
-    public Sprite InactiveSprite;
-
     protected override bool CanPower
     {
         get { return true; }
@@ -65,9 +62,6 @@ public class LaserDevice : GameDevice {
 
     protected override void CleanupAfterTickInternal()
     {
-        if (_r != null)
-            _r.sprite = (PoweredBy.Count > 0) ? ActiveSprite : InactiveSprite;
-
         for (int i = 0; i < beams.Length; i++)
         {
             UpdateBeam(i);

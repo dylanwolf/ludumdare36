@@ -180,7 +180,7 @@ public class BeamDevice : GameDevice {
         targetTileY = TileY + (modifiedBlockLength * Direction[1]);
 
         // Test interposing blocks
-        for (int i = 0; i < modifiedBlockLength - 1; i++)
+        for (int i = 0; i < modifiedBlockLength; i++)
         {
             testX = TileX + (Direction[0] * (i + 1));
             testY = TileY + (Direction[1] * (i + 1));
@@ -197,12 +197,13 @@ public class BeamDevice : GameDevice {
         nextTileX = targetTileX + Direction[0];
         nextTileY = targetTileY + Direction[1];
 
+        GameEngine.Current.Light(this, targetTileX, targetTileY);
+        GameEngine.Current.Light(this, nextTileX, nextTileY);
+
         // Grow laser if unblocked
         if (nextTileX >= 0 && nextTileY >= 0 && nextTileX < GameState.LevelWidth && nextTileY < GameState.LevelHeight &&
             (GameState.Devices[nextTileY, nextTileX] == null || !GameState.Devices[nextTileY, nextTileX].BlocksLaser))
         {
-            GameEngine.Current.Light(this, targetTileX, targetTileY);
-
             if (BlockLength <= InitialWaitLength)
             {
                 BlockLength += Time.deltaTime * StartSpeed;
@@ -220,10 +221,6 @@ public class BeamDevice : GameDevice {
             {
                 BlockLength += Time.deltaTime * Speed;
             }
-        }
-        else
-        {
-            GameEngine.Current.Light(this, nextTileX, nextTileY);
         }
 
 

@@ -94,7 +94,6 @@ public class ObjectPools : MonoBehaviour {
         if (result == null)
         {
             tmpPI = PoolItem.Create<T>((GameObject)Instantiate(prefabs[poolName]));
-            Debug.Log(tmpPI);
             tmpPI.Transform.parent = parent;
             tmpPI.Transform.position = position;
             pools[poolName].Add(tmpPI);

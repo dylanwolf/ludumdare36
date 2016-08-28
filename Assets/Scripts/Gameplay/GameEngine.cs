@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameEngine : MonoBehaviour {
 
@@ -13,7 +14,14 @@ public class GameEngine : MonoBehaviour {
 
     void Start()
     {
-        SetupLevel(DEMO_LEVEL);
+        LoadCurrentLevel();
+    }
+
+    public void LoadCurrentLevel()
+    {
+        GameState.Mode = GameMode.Playing;
+        SetupLevel(GameState.LEVELS[GameState.LevelIndex].Board, GameState.LEVELS[GameState.LevelIndex].Switches);
+        LoadParts(GameState.LEVELS[GameState.LevelIndex].Parts);
     }
 
     public static LevelTile[,] DEMO_LEVEL = new LevelTile[,]
@@ -25,13 +33,19 @@ public class GameEngine : MonoBehaviour {
     };
 
     #region Setup
-    public void SetupLevel(LevelTile[,] level)
+    public void SetupLevel(LevelTile[,] level, GameState.SwitchAssociation[] switches)
     {
-        ScreenScroll2D.Current.Reset();
         ClearOldLevel();
         GameState.Tiles = new Tile[level.GetLength(0), level.GetLength(1)];
         GameState.Devices = new GameDevice[level.GetLength(0), level.GetLength(1)];
-        BuildLevel(level);
+        BuildLevel(level, switches);
+    }
+
+    void LoadParts(Dictionary<string, int> parts)
+    {
+        GameState.Parts.Clear();
+        foreach (string key in parts.Keys)
+            GameState.Parts.Add(key, parts[key]);
     }
 
     void ClearOldLevel()
@@ -49,6 +63,11 @@ public class GameEngine : MonoBehaviour {
                         ObjectPools.Despawn(GameState.Tiles[y, x]);
                         GameState.Tiles[y, x] = null;
                     }
+                    if (GameState.Devices[y, x] != null)
+                    {
+                        ObjectPools.Despawn(GameState.Devices[y, x]);
+                        GameState.Devices[y, x] = null;
+                    }
                 }
             }
         }
@@ -63,8 +82,12 @@ public class GameEngine : MonoBehaviour {
     public const string LASER_POOL = "Lasers";
     public const string LIGHT_GOAL_POOL = "LightGoals";
     public const string MIRROR_POOL = "Mirrors";
+    public const string GEAR_GOAL_POOL = "GearGoals";
+    public const string POWER_GOAL_POOL = "PowerGoals";
+    public const string DOOR_POOL = "Doors";
+    public const string LIGHT_SWITCH_POOL = "LightSwitches";
 
-    void BuildLevel(LevelTile[,] level)
+    void BuildLevel(LevelTile[,] level, GameState.SwitchAssociation[] switches)
     {
         GameState.WinConditions.Clear();
         GameState.LevelHeight = GameState.Tiles.GetLength(0);
@@ -107,7 +130,32 @@ public class GameEngine : MonoBehaviour {
                     case LevelTile.LightGoal:
                         CreateDevice(LIGHT_GOAL_POOL, x, y);
                         break;
+                    case LevelTile.Mirror:
+                        CreateDevice(MIRROR_POOL, x, y);
+                        break;
+                    case LevelTile.GearGoal:
+                        CreateDevice(GEAR_GOAL_POOL, x, y);
+                        break;
+                    case LevelTile.PowerGoal:
+                        CreateDevice(POWER_GOAL_POOL, x, y);
+                        break;
+                    case LevelTile.LightSwitch:
+                        CreateDevice(LIGHT_SWITCH_POOL, x, y);
+                        break;
+                    case LevelTile.Door:
+                        CreateDevice(DOOR_POOL, x, y);
+                        break;
                 }
+            }
+        }
+
+        if (switches != null)
+        {
+            for (int i = 0; i < switches.Length; i++)
+            {
+                GameState.Devices[switches[i].Switch[0], switches[i].Switch[1]].SetSwitchTarget(
+                        switches[i].Target[1], switches[i].Target[0]
+                    );
             }
         }
     }
@@ -133,7 +181,7 @@ public class GameEngine : MonoBehaviour {
     #region Simulation
     void Update()
     {
-        if (GameState.Mode == GameMode.Playing)
+        if (GameState.Mode == GameMode.Playing || GameState.Mode == GameMode.Won)
             Tick();
     }
 
@@ -169,7 +217,7 @@ public class GameEngine : MonoBehaviour {
             }
         }
 
-        if (GameState.WinConditions.Count > 0)
+        if (GameState.Mode == GameMode.Playing && GameState.WinConditions.Count > 0)
         {
             bool hasWon = true;
             for (int i = 0; i < GameState.WinConditions.Count; i++)
@@ -209,6 +257,14 @@ public class GameEngine : MonoBehaviour {
 
         GameState.Devices[y, x].ApplyLight(lightingDevice);
     }
+
+    public void Switch(GameDevice switchingDevice, int x, int y)
+    {
+        if (y < 0 || x < 0 || y >= GameState.LevelHeight || x >= GameState.LevelWidth || GameState.Devices[y, x] == null)
+            return;
+
+        GameState.Devices[y, x].ApplySwitch(switchingDevice);
+    }
     #endregion
 
     #region Editor
@@ -219,18 +275,26 @@ public class GameEngine : MonoBehaviour {
 
     public void ApplyTool(int x, int y)
     {
+        if (GameState.Mode != GameMode.Playing)
+            return;
+
         if (GameState.EditorSelection == GameState.EDITOR_DELETE)
         {
             if (GameState.Devices[y,x] != null && GameState.Devices[y,x].CanDelete)
             {
+                GameState.Parts[GameState.Devices[y, x].PartName]++;
                 ObjectPools.Despawn(GameState.Devices[y,x]);
                 GameState.Devices[y,x] = null;
             }
         }
         else if (GameState.EditorSelection != null)
         {
-            if (GameState.Devices[y,x] == null)
+            if (GameState.Devices[y, x] == null && GameState.Parts.ContainsKey(GameState.EditorSelection) && GameState.Parts[GameState.EditorSelection] > 0)
+            {
                 CreateDevice(GameState.EditorSelection, x, y);
+                GameState.Devices[y, x].PartName = GameState.EditorSelection;
+                GameState.Parts[GameState.EditorSelection]--;
+            }
         }
     }
     #endregion
@@ -239,7 +303,16 @@ public class GameEngine : MonoBehaviour {
     public void WonGame()
     {
         GameState.Mode = GameMode.Won;
-        Debug.Log("Won game!");
+        FinishedLevelWindow.Current.Show();
+        if (GameState.LevelIndex < GameState.LEVELS.Length - 1)
+        {
+            GameState.LevelIndex++;
+            FinishedLevelWindow.Current.ShowNextLevel(true);
+        }
+        else
+        {
+            FinishedLevelWindow.Current.ShowNextLevel(false);
+        }
     }
     #endregion
 }

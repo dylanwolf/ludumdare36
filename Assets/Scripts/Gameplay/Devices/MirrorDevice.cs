@@ -112,12 +112,12 @@ public class MirrorDevice : GameDevice {
         // beam 2 = 0, -1
         // beam 3 = 0, 1
 
-        if ((device.TileX == TileX - 1 || device.TileX == TileX + 1) && device.TileY == TileY)
+        if (device.TileX != TileX && device.TileY == TileY)
         {
             beamsOn[2] = true;
             beamsOn[3] = true;
         }
-        else if ((device.TileY == TileY - 1 || device.TileY == TileY + 1) && device.TileX == TileX)
+        else if (device.TileY != TileY && device.TileX == TileX)
         {
             beamsOn[0] = true;
             beamsOn[1] = true;

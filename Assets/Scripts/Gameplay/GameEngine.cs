@@ -21,8 +21,10 @@ public class GameEngine : MonoBehaviour {
     public void LoadCurrentLevel()
     {
         GameState.Mode = GameMode.Playing;
+        ToolSelector.Current.SetLevelName(GameState.LevelIndex, GameState.LEVELS[GameState.LevelIndex].Name);
         SetupLevel(GameState.LEVELS[GameState.LevelIndex].Board, GameState.LEVELS[GameState.LevelIndex].Switches);
         LoadParts(GameState.LEVELS[GameState.LevelIndex].Parts);
+        ToolSelector.Current.SetSlots();
     }
 
     public static LevelTile[,] DEMO_LEVEL = new LevelTile[,]
@@ -274,6 +276,9 @@ public class GameEngine : MonoBehaviour {
         GameState.EditorSelection = poolName;
     }
 
+    const string SOUND_DELETE = "DeleteDevice";
+    const string SOUND_ADD = "PlaceDevice";
+
     public void ApplyTool(int x, int y)
     {
         if (GameState.Mode != GameMode.Playing)
@@ -286,6 +291,8 @@ public class GameEngine : MonoBehaviour {
                 GameState.Parts[GameState.Devices[y, x].PartName]++;
                 ObjectPools.Despawn(GameState.Devices[y,x]);
                 GameState.Devices[y,x] = null;
+                ToolSelector.Current.UpdateCounts();
+                SoundBoard.Play(SOUND_DELETE);
             }
         }
         else if (GameState.EditorSelection != null)
@@ -295,6 +302,8 @@ public class GameEngine : MonoBehaviour {
                 CreateDevice(GameState.EditorSelection, x, y);
                 GameState.Devices[y, x].PartName = GameState.EditorSelection;
                 GameState.Parts[GameState.EditorSelection]--;
+                ToolSelector.Current.UpdateCounts();
+                SoundBoard.Play(SOUND_ADD);
             }
         }
     }

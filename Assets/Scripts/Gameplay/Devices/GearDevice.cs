@@ -9,8 +9,22 @@ public class GearDevice : GameDevice {
         get { return true; }
     }
 
-    public Sprite ActiveSprite;
-    public Sprite InactiveSprite;
+    DeviceAnimation AnimationState;
+    Animator _anim;
+
+    void Awake()
+    {
+        _anim = GetComponent<Animator>();
+    }
+
+    public bool applyCrank = false;
+
+    public override void Initialize()
+    {
+        base.Initialize();
+        applyCrank = false;
+        AnimationState = DeviceAnimation.Stopped;
+    }
 
     protected override void ResetTickStateInternal()
     {
@@ -22,8 +36,31 @@ public class GearDevice : GameDevice {
 
     protected override void CleanupAfterTickInternal()
     {
-        if (_r != null)
-            _r.sprite = (CrankedBy.Count > 0) ? ActiveSprite : InactiveSprite;
+        if (CrankedBy.Count > 0)
+        {
+            if (AnimationState == DeviceAnimation.Stopped)
+                AnimationState = DeviceAnimation.Starting;
+            else if (AnimationState == DeviceAnimation.Ending)
+                AnimationState = DeviceAnimation.Running;
+        }
+        else
+        {
+            applyCrank = false;
+
+            if (AnimationState == DeviceAnimation.Starting || AnimationState == DeviceAnimation.Running)
+                AnimationState = DeviceAnimation.Ending;
+        }
+
+        ApplyAnimation();
+    }
+
+    const string ANIM_RUNNING = "IsRunning";
+    void ApplyAnimation()
+    {
+        if (_anim != null)
+        {
+            _anim.SetBool(ANIM_RUNNING, AnimationState != DeviceAnimation.Stopped);
+        }
     }
 
     protected override void ApplyCrankInternal(GameDevice device)
@@ -33,8 +70,6 @@ public class GearDevice : GameDevice {
         GameEngine.Current.Crank(this, TileX + 1, TileY);
         GameEngine.Current.Crank(this, TileX, TileY - 1);
         GameEngine.Current.Crank(this, TileX, TileY + 1);
-
-        if (_r != null)
-            _r.sprite = (CrankedBy.Count > 0) ? ActiveSprite : InactiveSprite;
+        applyCrank = true;
     }
 }

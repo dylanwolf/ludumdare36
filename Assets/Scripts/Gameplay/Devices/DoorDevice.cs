@@ -20,19 +20,35 @@ public class DoorDevice : GameDevice {
         }
     }
 
+    bool isOpen = false;
+
     public override bool BlocksLaser
     {
         get
         {
-            return !switched;
+            return !isOpen;
         }
     }
 
-    bool switched = false;
+    DeviceAnimation AnimationState;
+    Animator _anim;
+
+
+    void Awake()
+    {
+        _anim = GetComponent<Animator>();
+    }
+
+
+    public override void Initialize()
+    {
+        base.Initialize();
+        isOpen = false;
+        AnimationState = DeviceAnimation.Stopped;
+    }
 
     protected override void ResetTickStateInternal()
     {
-        switched = false;
     }
 
     protected override void TickInternal()
@@ -42,13 +58,51 @@ public class DoorDevice : GameDevice {
 
     protected override void CleanupAfterTickInternal()
     {
-        if (_r != null)
-            _r.enabled = !switched;
+        if (SwitchedBy.Count > 0)
+        {
+            if (AnimationState == DeviceAnimation.Stopped)
+                AnimationState = DeviceAnimation.Starting;
+            else if (AnimationState == DeviceAnimation.Ending)
+                AnimationState = DeviceAnimation.Running;
+        }
+        else
+        {
+            isOpen = false;
+
+            if (AnimationState == DeviceAnimation.Starting || AnimationState == DeviceAnimation.Running)
+                AnimationState = DeviceAnimation.Ending;
+        }
+
+        ApplyAnimation();
+    }
+
+    const string ANIM_STARTING = "IsStarting";
+    const string ANIM_RUNNING = "IsRunning";
+    const string ANIM_ENDING = "IsEnding";
+    void ApplyAnimation()
+    {
+        if (_anim != null)
+        {
+            _anim.SetBool(ANIM_STARTING, AnimationState == DeviceAnimation.Starting);
+            _anim.SetBool(ANIM_RUNNING, AnimationState != DeviceAnimation.Stopped);
+            _anim.SetBool(ANIM_ENDING, AnimationState == DeviceAnimation.Ending);
+        }
     }
 
     protected override void ApplySwitchInternal(GameDevice device)
     {
-        switched = true;
+        base.ApplySwitchInternal(device);
     }
 
+    public void AnimationStartedComplete()
+    {
+        isOpen = true;
+        AnimationState = DeviceAnimation.Running;
+    }
+
+    public void AnimationEndingComplete()
+    {
+        isOpen = false;
+        AnimationState = DeviceAnimation.Stopped;
+    }
 }

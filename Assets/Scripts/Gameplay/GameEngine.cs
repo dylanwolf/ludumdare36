@@ -5,9 +5,10 @@ using System.Collections.Generic;
 public class GameEngine : MonoBehaviour {
 
     public static GameEngine Current;
-    public static Vector2 TileSize = new Vector2(2.56f, 1.92f);
+    //public static Vector2 TileSize = new Vector2(2.56f, 2.1f);
+    public static Vector2 TileSize = new Vector2(2.76f, 2.3f);
 
-	void Awake()
+    void Awake()
     {
         Current = this;
     }

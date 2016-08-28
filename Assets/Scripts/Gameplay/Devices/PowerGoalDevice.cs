@@ -17,6 +17,13 @@ public class PowerGoalDevice : GameDevice {
 
     bool win = false;
 
+    Animator _anim;
+
+    void Awake()
+    {
+        _anim = GetComponent<Animator>();
+    }
+
     public override bool HasSetWinCondition
     {
         get { return win; }
@@ -44,7 +51,16 @@ public class PowerGoalDevice : GameDevice {
 
     protected override void CleanupAfterTickInternal()
     {
+        ApplyAnimation();
+    }
 
+    const string ANIM_RUNNING = "IsRunning";
+    void ApplyAnimation()
+    {
+        if (_anim != null)
+        {
+            _anim.SetBool(ANIM_RUNNING, win);
+        }
     }
 
     protected override void ApplyPowerInternal(GameDevice device)

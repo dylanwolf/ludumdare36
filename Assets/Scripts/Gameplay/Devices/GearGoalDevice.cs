@@ -3,6 +3,8 @@ using System.Collections;
 
 public class GearGoalDevice : GameDevice {
 
+    public SpriteRenderer Indicator;
+
     public override bool CanDelete { get { return false; } }
 
     protected override bool CanCrank
@@ -11,6 +13,13 @@ public class GearGoalDevice : GameDevice {
         {
             return true;
         }
+    }
+
+    Animator _anim;
+
+    void Awake()
+    {
+        _anim = GetComponent<Animator>();
     }
 
     public override bool IsWinCondition { get { return true; } }
@@ -35,6 +44,8 @@ public class GearGoalDevice : GameDevice {
     protected override void ResetTickStateInternal()
     {
         win = false;
+        if (_r != null && Indicator != null)
+            Indicator.sortingOrder = _r.sortingOrder + 1;
     }
 
     protected override void TickInternal()
@@ -44,7 +55,16 @@ public class GearGoalDevice : GameDevice {
 
     protected override void CleanupAfterTickInternal()
     {
+        ApplyAnimation();
+    }
 
+    const string ANIM_RUNNING = "IsRunning";
+    void ApplyAnimation()
+    {
+        if (_anim != null)
+        {
+            _anim.SetBool(ANIM_RUNNING, win);
+        }
     }
 
     protected override void ApplyCrankInternal(GameDevice device)

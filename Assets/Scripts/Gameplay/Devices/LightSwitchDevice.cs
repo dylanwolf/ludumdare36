@@ -12,6 +12,11 @@ public class LightSwitchDevice : GameDevice {
         }
     }
 
+    public Sprite ActiveSprite;
+    public Sprite InactiveSprite;
+
+    public SpriteRenderer SwitchSprite;
+
     protected override bool CanLight
     {
         get
@@ -32,7 +37,8 @@ public class LightSwitchDevice : GameDevice {
 
     protected override void CleanupAfterTickInternal()
     {
-        
+        if (SwitchSprite != null)
+            SwitchSprite.sprite = LitBy.Count > 0 ? ActiveSprite : InactiveSprite;
     }
 
     protected override void ApplyLightInternal(GameDevice device)

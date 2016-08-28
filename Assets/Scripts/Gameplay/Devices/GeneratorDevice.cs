@@ -6,6 +6,7 @@ public class GeneratorDevice : GameDevice {
     DeviceAnimation AnimationState;
     Animator _anim;
 
+
     void Awake()
     {
         _anim = GetComponent<Animator>();

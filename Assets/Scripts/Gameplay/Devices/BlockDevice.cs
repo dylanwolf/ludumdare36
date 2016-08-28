@@ -3,10 +3,7 @@ using System.Collections;
 
 public class BlockDevice : GameDevice {
 
-    void Awake()
-    {
-        CanDelete = false;
-    }
+    public override bool CanDelete { get { return false; } }
 
     protected override void TickInternal()
     {

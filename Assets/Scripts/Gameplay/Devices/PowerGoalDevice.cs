@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System;
 
-public class LightGoalDevice : GameDevice {
+public class PowerGoalDevice : GameDevice {
 
     public override bool CanDelete { get { return false; } }
 
-    protected override bool CanLight
+    protected override bool CanPower
     {
         get
         {
@@ -40,17 +39,17 @@ public class LightGoalDevice : GameDevice {
 
     protected override void TickInternal()
     {
-        
+
     }
 
     protected override void CleanupAfterTickInternal()
     {
-        
+
     }
 
-    protected override void ApplyLightInternal(GameDevice device)
+    protected override void ApplyPowerInternal(GameDevice device)
     {
-        base.ApplyLightInternal(device);
+        base.ApplyPowerInternal(device);
         win = true;
     }
 }

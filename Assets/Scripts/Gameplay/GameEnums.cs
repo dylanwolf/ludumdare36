@@ -10,7 +10,12 @@ public enum LevelTile
     Generator = 4,
     Repeater = 5,
     Laser = 6,
-    LightGoal = 7
+    LightGoal = 7,
+    Mirror = 8,
+    GearGoal = 9,
+    PowerGoal = 10,
+    Door = 11,
+    LightSwitch = 12
 }
 
 public enum DeviceAnimation

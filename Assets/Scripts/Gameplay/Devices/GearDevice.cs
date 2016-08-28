@@ -33,5 +33,8 @@ public class GearDevice : GameDevice {
         GameEngine.Current.Crank(this, TileX + 1, TileY);
         GameEngine.Current.Crank(this, TileX, TileY - 1);
         GameEngine.Current.Crank(this, TileX, TileY + 1);
+
+        if (_r != null)
+            _r.sprite = (CrankedBy.Count > 0) ? ActiveSprite : InactiveSprite;
     }
 }

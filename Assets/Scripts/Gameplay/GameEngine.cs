@@ -5,7 +5,8 @@ using System.Collections.Generic;
 public class GameEngine : MonoBehaviour {
 
     public static GameEngine Current;
-    //public static Vector2 TileSize = new Vector2(2.56f, 2.1f);
+    public Transform TileParent;
+    public BoxCollider2D CameraBounds;
     public static Vector2 TileSize = new Vector2(2.76f, 2.3f);
 
     void Awake()
@@ -97,16 +98,22 @@ public class GameEngine : MonoBehaviour {
         GameState.LevelWidth = GameState.Tiles.GetLength(1);
 
         Vector2 offset = new Vector2(
-                -(GameState.LevelWidth / 2.0f) * TileSize.x,
-                (GameState.LevelHeight / 2.0f) * TileSize.y
+                (0.5f -(GameState.LevelWidth / 2.0f)) * TileSize.x,
+                ((GameState.LevelHeight / 2.0f) - 2) * TileSize.y
             );
+
+        Vector2 bounds = new Vector2(
+               (GameState.LevelWidth * TileSize.x) + (Camera.main.aspect * Camera.main.orthographicSize),
+                (GameState.LevelHeight * TileSize.y) + (Camera.main.orthographicSize)
+            );
+        CameraBounds.size = bounds;
 
         for (int y = 0; y < GameState.LevelHeight; y++)
         {
             for (int x = 0; x < GameState.LevelWidth; x++)
             {
                 Vector3 pos = new Vector3(offset.x + (x * TileSize.x), offset.y - (y * TileSize.y));
-                GameState.Tiles[y, x] = ObjectPools.Spawn<Tile>(TILE_POOL, pos, null);
+                GameState.Tiles[y, x] = ObjectPools.Spawn<Tile>(TILE_POOL, pos, TileParent);
                 GameState.Tiles[y, x].TileX = x;
                 GameState.Tiles[y, x].TileY = y;
 

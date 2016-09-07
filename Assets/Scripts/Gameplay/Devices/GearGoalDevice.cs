@@ -3,8 +3,6 @@ using System.Collections;
 
 public class GearGoalDevice : GameDevice {
 
-    public SpriteRenderer Indicator;
-
     public override bool CanDelete { get { return false; } }
 
     protected override bool CanCrank
@@ -44,8 +42,6 @@ public class GearGoalDevice : GameDevice {
     protected override void ResetTickStateInternal()
     {
         win = false;
-        if (_r != null && Indicator != null)
-            Indicator.sortingOrder = _r.sortingOrder + 1;
     }
 
     protected override void TickInternal()

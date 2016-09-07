@@ -70,6 +70,10 @@ public class GearGoalDevice : GameDevice {
     protected override void ApplyCrankInternal(GameDevice device)
     {
         base.ApplyCrankInternal(device);
+        GameEngine.Current.Crank(this, TileX - 1, TileY);
+        GameEngine.Current.Crank(this, TileX + 1, TileY);
+        GameEngine.Current.Crank(this, TileX, TileY - 1);
+        GameEngine.Current.Crank(this, TileX, TileY + 1);
         win = true;
     }
 }

@@ -59,7 +59,7 @@ public class GearDevice : GameDevice {
     {
         if (_anim != null)
         {
-            _anim.SetBool(ANIM_RUNNING, AnimationState != DeviceAnimation.Stopped);
+            _anim.SetBool(ANIM_RUNNING, applyCrank);
         }
     }
 

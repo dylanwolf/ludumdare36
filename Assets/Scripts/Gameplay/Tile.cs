@@ -6,9 +6,20 @@ public class Tile : MonoBehaviour {
     public int TileX;
     public int TileY;
 
-    void OnMouseUpAsButton()
+    void OnMouseDown()
     {
         if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
-            GameEngine.Current.ApplyTool(TileX, TileY);
+        {
+            if (GameEngine.Current.ApplyTool(TileX, TileY))
+                ScreenScroll2DTouch.Current.CancelMove();
+        }
+    }
+
+    void OnMouseOver()
+    {
+        if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonDown(1))
+        {
+            GameEngine.Current.ApplyTool(GameState.EDITOR_DELETE, TileX, TileY);
+        }
     }
 }

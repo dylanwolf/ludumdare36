@@ -286,12 +286,17 @@ public class GameEngine : MonoBehaviour {
     const string SOUND_DELETE = "DeleteDevice";
     const string SOUND_ADD = "PlaceDevice";
 
-    public void ApplyTool(int x, int y)
+    public bool ApplyTool(int x, int y)
+    {
+        return ApplyTool(GameState.EditorSelection, x, y);
+    }
+
+    public bool ApplyTool(string toolName, int x, int y)
     {
         if (GameState.Mode != GameMode.Playing)
-            return;
+            return false;
 
-        if (GameState.EditorSelection == GameState.EDITOR_DELETE)
+        if (toolName == GameState.EDITOR_DELETE)
         {
             if (GameState.Devices[y,x] != null && GameState.Devices[y,x].CanDelete)
             {
@@ -300,19 +305,23 @@ public class GameEngine : MonoBehaviour {
                 GameState.Devices[y,x] = null;
                 ToolSelector.Current.UpdateCounts();
                 SoundBoard.Play(SOUND_DELETE);
+                return true;
             }
         }
-        else if (GameState.EditorSelection != null)
+        else if (toolName != null)
         {
-            if (GameState.Devices[y, x] == null && GameState.Parts.ContainsKey(GameState.EditorSelection) && GameState.Parts[GameState.EditorSelection] > 0)
+            if (GameState.Devices[y, x] == null && GameState.Parts.ContainsKey(toolName) && GameState.Parts[toolName] > 0)
             {
-                CreateDevice(GameState.EditorSelection, x, y);
-                GameState.Devices[y, x].PartName = GameState.EditorSelection;
-                GameState.Parts[GameState.EditorSelection]--;
+                CreateDevice(toolName, x, y);
+                GameState.Devices[y, x].PartName = toolName;
+                GameState.Parts[toolName]--;
                 ToolSelector.Current.UpdateCounts();
                 SoundBoard.Play(SOUND_ADD);
+                return true;
             }
         }
+
+        return false;
     }
     #endregion
 

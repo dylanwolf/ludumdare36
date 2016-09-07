@@ -6,6 +6,21 @@ public class ScreenScroll2DTouch : MonoBehaviour {
     public float Speed = 0.1f;
     public BoxCollider2D BoundingBox;
 
+    public static ScreenScroll2DTouch Current;
+
+    void Awake()
+    {
+        Current = this;
+    }
+
+    public void CancelMove()
+    {
+        isTouchCanceled = true;
+        isMouseCanceled = true;
+    }
+
+    bool isTouchCanceled = false;
+    bool isMouseCanceled = false;
     bool updatedPosition = false;
 
     // Logic based on http://stackoverflow.com/questions/25323389/camera-2d-movement-android-unity
@@ -13,19 +28,41 @@ public class ScreenScroll2DTouch : MonoBehaviour {
 
         updatedPosition = false;
 
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
+        if (Input.touchCount > 0)
         {
-            Vector2 touchDeltaPosition = Input.GetTouch(0).deltaPosition;
-            transform.Translate(-touchDeltaPosition.x * Speed * Time.deltaTime, -touchDeltaPosition.y * Speed * Time.deltaTime, 0);
-            updatedPosition = true;
+            if (Input.GetTouch(0).phase == TouchPhase.Moved && !isTouchCanceled)
+            {
+                Vector2 touchDeltaPosition = Input.GetTouch(0).deltaPosition;
+                transform.Translate(-touchDeltaPosition.x * Speed * Time.deltaTime, -touchDeltaPosition.y * Speed * Time.deltaTime, 0);
+                updatedPosition = true;
+            }
+            else if (Input.GetTouch(0).phase == TouchPhase.Ended || Input.GetTouch(0).phase == TouchPhase.Canceled)
+            {
+                isTouchCanceled = false;
+            }
+        }
+        else
+        {
+            isTouchCanceled = false;
         }
 
         MouseTouch.Touch? mouseTouch = MouseTouch.GetTouch(0);
-        if (mouseTouch.HasValue && mouseTouch.Value.Phase == MouseTouch.TouchPhase.Moved)
+        if (mouseTouch.HasValue && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
         {
-            Vector2 touchDeltaPosition = mouseTouch.Value.DeltaPosition;
-            transform.Translate(-touchDeltaPosition.x * Speed * Time.deltaTime, -touchDeltaPosition.y * Speed * Time.deltaTime, 0);
-            updatedPosition = true;
+            if (mouseTouch.Value.Phase == MouseTouch.TouchPhase.Moved && !isMouseCanceled)
+            {
+                Vector2 touchDeltaPosition = mouseTouch.Value.DeltaPosition;
+                transform.Translate(-touchDeltaPosition.x * Speed * Time.deltaTime, -touchDeltaPosition.y * Speed * Time.deltaTime, 0);
+                updatedPosition = true;
+            }
+            else if (mouseTouch.Value.Phase == MouseTouch.TouchPhase.Canceled || mouseTouch.Value.Phase == MouseTouch.TouchPhase.Ended)
+            {
+                isMouseCanceled = false;
+            }
+        }
+        else
+        {
+            isMouseCanceled = false;
         }
 
         if (updatedPosition && BoundingBox != null)

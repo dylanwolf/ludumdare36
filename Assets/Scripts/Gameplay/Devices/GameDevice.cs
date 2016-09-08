@@ -24,6 +24,8 @@ public abstract class GameDevice : MonoBehaviour, IObjectPoolable {
     [System.NonSerialized]
     public bool HasSwitchedThisTick;
 
+    public const int TileLayerMultiplier = 100;
+
     public virtual bool CanDelete { get { return true; } }
 
     protected List<GameDevice> PoweredBy = new List<GameDevice>();
@@ -53,7 +55,7 @@ public abstract class GameDevice : MonoBehaviour, IObjectPoolable {
     protected virtual void Update()
     {
         if (_r != null)
-            _r.sortingOrder = TileY * 10;
+            _r.sortingOrder = TileY * TileLayerMultiplier;
     }
 
     public virtual void Disable()

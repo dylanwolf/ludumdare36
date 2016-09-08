@@ -1,0 +1,32 @@
+Gears
+2,0,0,0,9
+Gears:3
+
+Power
+2,0,0,0,10
+Gears:1||Generators:1||Repeaters:1
+
+Light
+2,0,0,0,7
+Generators:1||Lasers:1
+
+All The Things
+0,0,0,0,7||2,0,0,0,0||0,0,0,0,7
+Generators:1||Lasers:2||Repeaters:2
+
+Split
+7,0,0,0,7||0,0,0,0,0||0,0,0,0,0||0,0,2,0,0
+Generators:1||Lasers:1||Mirrors:1
+
+Workaround
+0,0,0,0,0||0,0,0,1,0||2,0,0,1,7||0,0,0,1,0||0,0,0,0,0
+Gears:2||Generators:1||Lasers:1||Repeaters:3
+
+Collect All Three
+0,0,0,0,0||0,0,9,0,0||2,0,0,1,7||0,0,0,10,0||0,0,0,0,0
+Gears:2||Generators:1||Lasers:1||Repeaters:2
+
+Open The Way
+0,0,12,0,0,0,0||0,0,0,0,0,0,0||2,0,0,0,11,0,7||0,0,0,0,0,0,0||0,0,0,0,0,0,0
+Generators:1||Lasers:1||Repeaters:2
+0,2:2,4

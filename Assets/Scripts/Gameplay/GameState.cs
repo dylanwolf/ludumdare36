@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public static class GameState {
 
@@ -16,21 +17,6 @@ public static class GameState {
     public static GameDevice[,] Devices;
     public static List<GameDevice> WinConditions = new List<GameDevice>();
     public static Dictionary<string, int> Parts = new Dictionary<string, int>();
-
-    public class Level
-    {
-        public string Name;
-        public LevelTile[,] Board;
-        public Dictionary<string, int> Parts = new Dictionary<string, int>();
-        public SwitchAssociation[] Switches;
-    }
-
-    public class SwitchAssociation
-    {
-        public int[] Switch;
-        public int[] Target;
-    }
-
 
     public static int LevelIndex = 0;
 

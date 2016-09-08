@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
+[Serializable]
 public enum LevelTile
 {
     Empty = 0,

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class LaserDevice : GameDevice {
 
@@ -81,7 +82,8 @@ public class LaserDevice : GameDevice {
                 beams[index].SetTile(TileX, TileY);
                 beams[index].SetDirectionAndLayer(
                         (index == 0) ? 1 : ((index == 1) ? -1 : 0),
-                        (index == 2) ? -1 : ((index == 3) ? 1 : 0)
+                        (index == 2) ? -1 : ((index == 3) ? 1 : 0),
+                        beamLayerOffsets[index]
                     );
             }
             else
@@ -95,6 +97,8 @@ public class LaserDevice : GameDevice {
             beams[index] = null;
         }
     }
+
+    static readonly int[] beamLayerOffsets = new int[] { 30, 10, 20, 20 };
 
     protected override void ApplyPowerInternal(GameDevice device)
     {

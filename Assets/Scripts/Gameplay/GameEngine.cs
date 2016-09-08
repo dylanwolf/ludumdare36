@@ -16,7 +16,13 @@ public class GameEngine : MonoBehaviour {
 
     void Start()
     {
+        LoadLevelsFromDisk();
         LoadCurrentLevel();
+    }
+
+    public void LoadLevelsFromDisk()
+    {
+        GameState.LEVELS = LevelReader.Load("RetrofutureLevels");
     }
 
     public void LoadCurrentLevel()
@@ -37,7 +43,7 @@ public class GameEngine : MonoBehaviour {
     };
 
     #region Setup
-    public void SetupLevel(LevelTile[,] level, GameState.SwitchAssociation[] switches)
+    public void SetupLevel(LevelTile[,] level, SwitchAssociation[] switches)
     {
         ClearOldLevel();
         GameState.Tiles = new Tile[level.GetLength(0), level.GetLength(1)];
@@ -91,7 +97,7 @@ public class GameEngine : MonoBehaviour {
     public const string DOOR_POOL = "Doors";
     public const string LIGHT_SWITCH_POOL = "LightSwitches";
 
-    void BuildLevel(LevelTile[,] level, GameState.SwitchAssociation[] switches)
+    void BuildLevel(LevelTile[,] level, SwitchAssociation[] switches)
     {
         GameState.WinConditions.Clear();
         GameState.LevelHeight = GameState.Tiles.GetLength(0);

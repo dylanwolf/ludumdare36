@@ -68,15 +68,15 @@ public class BeamDevice : GameDevice {
             r.sortingOrder = layer;
     }
 
-    public void SetDirectionAndLayer(int x, int y)
+    public void SetDirectionAndLayer(int x, int y, int layerOffset)
     {
         Direction[0] = x;
         Direction[1] = y;
 
-        SetLayer(_r, (TileY * 10) + 5);
-        SetLayer(StartSprite, (TileY * 10) + 6);
-        SetLayer(BeamSprite, (TileY * 10) + 5);
-        SetLayer(EndSprite, (TileY * 10) + 6);
+        SetLayer(_r, (TileY * TileLayerMultiplier) + 5 + layerOffset);
+        SetLayer(StartSprite, (TileY * TileLayerMultiplier) + 6 + layerOffset);
+        SetLayer(BeamSprite, (TileY * TileLayerMultiplier) + 5 + layerOffset);
+        SetLayer(EndSprite, (TileY * TileLayerMultiplier) + 6 + layerOffset);
 
         if (y == 0)
         {

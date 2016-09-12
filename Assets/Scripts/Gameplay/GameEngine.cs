@@ -34,16 +34,8 @@ public class GameEngine : MonoBehaviour {
         ToolSelector.Current.SetSlots();
     }
 
-    public static LevelTile[,] DEMO_LEVEL = new LevelTile[,]
-    {
-        { LevelTile.Empty, LevelTile.Empty, LevelTile.Block, LevelTile.LightGoal, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty },
-        { LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty },
-        { LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty },
-        { LevelTile.Engine, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty },
-    };
-
     #region Setup
-    public void SetupLevel(LevelTile[,] level, SwitchAssociation[] switches)
+    public void SetupLevel(LevelTile?[,] level, SwitchAssociation[] switches)
     {
         ClearOldLevel();
         GameState.Tiles = new Tile[level.GetLength(0), level.GetLength(1)];
@@ -97,7 +89,7 @@ public class GameEngine : MonoBehaviour {
     public const string DOOR_POOL = "Doors";
     public const string LIGHT_SWITCH_POOL = "LightSwitches";
 
-    void BuildLevel(LevelTile[,] level, SwitchAssociation[] switches)
+    void BuildLevel(LevelTile?[,] level, SwitchAssociation[] switches)
     {
         GameState.WinConditions.Clear();
         GameState.LevelHeight = GameState.Tiles.GetLength(0);
@@ -118,12 +110,15 @@ public class GameEngine : MonoBehaviour {
         {
             for (int x = 0; x < GameState.LevelWidth; x++)
             {
+                if (!level[y, x].HasValue)
+                    continue;
+
                 Vector3 pos = new Vector3(offset.x + (x * TileSize.x), offset.y - (y * TileSize.y));
                 GameState.Tiles[y, x] = ObjectPools.Spawn<Tile>(TILE_POOL, pos, TileParent);
                 GameState.Tiles[y, x].TileX = x;
                 GameState.Tiles[y, x].TileY = y;
 
-                switch (level[y,x])
+                switch (level[y,x].Value)
                 {
                     case LevelTile.Engine:
                         CreateDevice(ENGINE_POOL, x, y);

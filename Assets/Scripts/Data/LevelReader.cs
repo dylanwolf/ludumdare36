@@ -52,17 +52,21 @@ public static class LevelReader {
     static readonly string[] SWITCH_COORD_SEPARATOR = new string[] { "," };
     static readonly string[] SWITCH_TARGET_SEPARATOR = new string[] { ":" };
 
-    static LevelTile[,] ParseBoard(string line)
+    static LevelTile?[,] ParseBoard(string line)
     {
 
         string[] rows = line.Split(BOARD_ROW_SEPARATOR, StringSplitOptions.None);
-        LevelTile[,] tiles = new LevelTile[rows.Length, rows[0].Split(BOARD_TILE_SEPARATOR, StringSplitOptions.None).Length];
+        LevelTile?[,] tiles = new LevelTile?[rows.Length, rows[0].Split(BOARD_TILE_SEPARATOR, StringSplitOptions.None).Length];
         for (int i = 0; i < tiles.GetLength(0); i++)
         {
             string[] cells = rows[i].Split(BOARD_TILE_SEPARATOR, StringSplitOptions.None);
             for (int j = 0; j < tiles.GetLength(1); j++)
             {
-                tiles[i, j] = (LevelTile)int.Parse(cells[j]);
+                int cellType;
+                if (int.TryParse(cells[j], out cellType))
+                {
+                    tiles[i, j] = (LevelTile)int.Parse(cells[j]);
+                }
             }
         }
         return tiles;
@@ -115,7 +119,7 @@ public static class LevelReader {
 public class Level
 {
     public string Name;
-    public LevelTile[,] Board;
+    public LevelTile?[,] Board;
     public Dictionary<string, int> Parts = new Dictionary<string, int>();
     public SwitchAssociation[] Switches;
 }

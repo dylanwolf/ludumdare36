@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 16188f66bd07624478a5333da79c75c2
-timeCreated: 1472419951
+guid: 6d8bdb094f5dd6d4682254717d9d88b1
+timeCreated: 1473563516
 licenseType: Free
 TrueTypeFontImporter:
   serializedVersion: 3
@@ -10,10 +10,12 @@ TrueTypeFontImporter:
   characterPadding: 0
   includeFontData: 1
   fontNames:
-  - Manaspace
-  fallbackFontReferences: []
+  - Verdana
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 4ed268066f2385e4fbb91c249c4e5688, type: 3}
+  - {fileID: 12800000, guid: 64f577afa7ebb58458344b0b57a8f4a3, type: 3}
   customCharacters: 
-  fontRenderingMode: 2
+  fontRenderingMode: 0
   ascentCalculationMode: 1
   userData: 
   assetBundleName: 

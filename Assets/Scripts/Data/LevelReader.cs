@@ -5,14 +5,17 @@ using System.Collections.Generic;
 
 public static class LevelReader {
 
-    public static Level[] Load(string filename)
+    public static Level[] Load(string filename, out int startingIndex)
     {
         var targetFile = Resources.Load<TextAsset>(filename);
-        return Parse(targetFile.text);
+        return Parse(targetFile.text, out startingIndex);
     }
 
-    public static Level[] Parse(string text)
+    const string ASTERISK = "*";
+
+    public static Level[] Parse(string text, out int startingIndex)
     {
+        startingIndex = 0;
         List<Level> levels = new List<Level>();
 
         string[] lines = text.Split(NEWLINE, StringSplitOptions.None);
@@ -30,6 +33,11 @@ public static class LevelReader {
             {
                 Level l = new Level();
                 l.Name = lines[index].Trim();
+                if (l.Name.StartsWith(ASTERISK))
+                {
+                    startingIndex = levels.Count;
+                    l.Name = l.Name.Substring(1);
+                }
                 index++;
                 l.Board = ParseBoard(lines[index]);
                 index++;

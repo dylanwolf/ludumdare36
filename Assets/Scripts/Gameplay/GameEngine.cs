@@ -22,7 +22,7 @@ public class GameEngine : MonoBehaviour {
 
     public void LoadLevelsFromDisk()
     {
-        GameState.LEVELS = LevelReader.Load("RetrofutureLevels");
+        GameState.LEVELS = LevelReader.Load("RetrofutureLevels", out GameState.LevelIndex);
     }
 
     public void LoadCurrentLevel()

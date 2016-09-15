@@ -252,7 +252,6 @@ public class BeamDevice : GameDevice {
                 );
         }
 
-        Debug.Log(BlockLength);
         SetScale(BlockLength);
     }
 }

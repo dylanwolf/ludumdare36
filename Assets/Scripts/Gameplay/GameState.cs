@@ -18,11 +18,11 @@ public static class GameState {
     public static List<GameDevice> WinConditions = new List<GameDevice>();
     public static Dictionary<string, int> Parts = new Dictionary<string, int>();
 
-    public static int LevelIndex = 0;
+    public static int LevelIndex = 12;
 
     public static Level[] LEVELS = new Level[]
     {
-        // Level 1
+        //// Level 1
         //new Level()
         //{
         //    Name = "Gears",
@@ -42,7 +42,7 @@ public static class GameState {
         //new Level()
         //{
         //    Name = "Power",
-        //    Board = new LevelTile[,]
+        //    Board = new LevelTile?[,]
         //    {
         //        { LevelTile.Engine, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.PowerGoal }
         //    },
@@ -58,7 +58,7 @@ public static class GameState {
         //new Level()
         //{
         //    Name = "Light",
-        //    Board = new LevelTile[,]
+        //    Board = new LevelTile?[,]
         //    {
         //        { LevelTile.Engine, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.LightGoal }
         //    },
@@ -73,7 +73,7 @@ public static class GameState {
         //new Level()
         //{
         //    Name = "All The Things",
-        //    Board = new LevelTile[,]
+        //    Board = new LevelTile?[,]
         //    {
         //        { LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.LightGoal },
         //        { LevelTile.Engine, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty },
@@ -91,7 +91,7 @@ public static class GameState {
         //new Level()
         //{
         //    Name = "Split",
-        //    Board = new LevelTile[,]
+        //    Board = new LevelTile?[,]
         //    {
         //        { LevelTile.LightGoal, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.LightGoal },
         //        { LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty },
@@ -102,7 +102,7 @@ public static class GameState {
         //    {
         //        {  GameEngine.GENERATOR_POOL, 1 },
         //        {  GameEngine.LASER_POOL, 1 },
-        //        { GameEngine.MIRROR_POOL, 1 }, 
+        //        { GameEngine.MIRROR_POOL, 1 },
         //    },
         //},
 
@@ -110,7 +110,7 @@ public static class GameState {
         //new Level()
         //{
         //    Name = "Workaround",
-        //    Board = new LevelTile[,]
+        //    Board = new LevelTile?[,]
         //    {
         //        { LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty },
         //        { LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Block, LevelTile.Empty },
@@ -131,7 +131,7 @@ public static class GameState {
         //new Level()
         //{
         //    Name = "Collect All Three",
-        //    Board = new LevelTile[,]
+        //    Board = new LevelTile?[,]
         //    {
         //        { LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty },
         //        { LevelTile.Empty, LevelTile.Empty, LevelTile.GearGoal, LevelTile.Empty, LevelTile.Empty },
@@ -152,7 +152,7 @@ public static class GameState {
         //new Level()
         //{
         //    Name = "Open The Way",
-        //    Board = new LevelTile[,]
+        //    Board = new LevelTile?[,]
         //    {
         //        { LevelTile.Empty, LevelTile.Empty, LevelTile.LightSwitch, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty },
         //        { LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty, LevelTile.Empty },

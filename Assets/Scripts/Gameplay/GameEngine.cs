@@ -28,10 +28,10 @@ public class GameEngine : MonoBehaviour {
     public void LoadCurrentLevel()
     {
         GameState.Mode = GameMode.Playing;
-        ToolSelector.Current.SetLevelName(GameState.LevelIndex, GameState.LEVELS[GameState.LevelIndex].Name);
+        ToolPanel.Current.Configure();
         SetupLevel(GameState.LEVELS[GameState.LevelIndex].Board, GameState.LEVELS[GameState.LevelIndex].Switches);
         LoadParts(GameState.LEVELS[GameState.LevelIndex].Parts);
-        ToolSelector.Current.SetSlots();
+        ToolPanel.Current.Refresh();
     }
 
     #region Setup
@@ -282,6 +282,7 @@ public class GameEngine : MonoBehaviour {
     public void SelectTool(string poolName)
     {
         GameState.EditorSelection = poolName;
+        ToolPanel.Current.Refresh();
     }
 
     const string SOUND_DELETE = "DeleteDevice";
@@ -304,7 +305,7 @@ public class GameEngine : MonoBehaviour {
                 GameState.Parts[GameState.Devices[y, x].PartName]++;
                 ObjectPools.Despawn(GameState.Devices[y,x]);
                 GameState.Devices[y,x] = null;
-                ToolSelector.Current.UpdateCounts();
+                ToolPanel.Current.Refresh();
                 SoundBoard.Play(SOUND_DELETE);
                 return true;
             }
@@ -316,7 +317,7 @@ public class GameEngine : MonoBehaviour {
                 CreateDevice(toolName, x, y);
                 GameState.Devices[y, x].PartName = toolName;
                 GameState.Parts[toolName]--;
-                ToolSelector.Current.UpdateCounts();
+                ToolPanel.Current.Refresh();
                 SoundBoard.Play(SOUND_ADD);
                 return true;
             }

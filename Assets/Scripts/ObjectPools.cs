@@ -5,7 +5,7 @@ using System.Collections.Generic;
 [AddComponentMenu("LudumDareResources/Utility/Object Pools")]
 public class ObjectPools : MonoBehaviour {
 
-	static Dictionary<string, List<PoolItem>> pools = new Dictionary<string, List<PoolItem>>();
+    static Dictionary<string, List<PoolItem>> pools = new Dictionary<string, List<PoolItem>>();
 	static Dictionary<string, GameObject> prefabs = new Dictionary<string, GameObject>();
 
 	public class PoolItem

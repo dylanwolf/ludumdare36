@@ -23,29 +23,23 @@ public class ToolPanel : MonoBehaviour {
         Current = this;
     }
 
-    /* Temporary */
-    void Start()
+    void ClearButtons()
     {
-        Configure();
+        buttonPool.AddRange(buttons);
+        for (int i = 0; i < buttonPool.Count; i++)
+            buttonPool[i].gameObject.SetActive(false);
+        buttons.Clear();
     }
 
-    void Update()
+    void OnDestroy()
     {
-        Refresh();
+        ClearButtons();
     }
-    /* End Temporary */
 
     bool firstUpdated = false;
     public void Configure()
     {
-        /* Temporary */
-        GameState.Parts.Clear();
-        foreach (string key in GameState.LEVELS[GameState.LevelIndex].Parts.Keys)
-            GameState.Parts.Add(key, GameState.LEVELS[GameState.LevelIndex].Parts[key]);
-        /* Temporary */
-
-        buttonPool.AddRange(buttons);
-        buttons.Clear();
+        ClearButtons();
 
         for (int i = 0; i < Config.Length; i++)
         {
@@ -62,6 +56,7 @@ public class ToolPanel : MonoBehaviour {
         if (buttonPool.Count > 0)
         {
             btn = buttonPool[0];
+            btn.gameObject.SetActive(true);
             buttonPool.RemoveAt(0);
         }
         else
@@ -117,7 +112,7 @@ public class ToolPanel : MonoBehaviour {
         int hidden = 0;
         for (int i = 0; i < buttons.Count; i++)
         {
-            buttons[i].RefreshIcon(firstUpdated);
+            buttons[i].RefreshIcon(!firstUpdated);
             if (CollapseHidden)
             {
                 if (buttons[i].Visible)

@@ -2,25 +2,65 @@ Gears
 2,0,0,0,9
 Gears:3
 
-Power
+Gears II
+0,0,0,0,9||-,-,0,-,-||2,0,0,0,0
+Gears:5
+
+Gears III
+0,0,0,0,0||2,0,-,0,9||0,0,0,0,0
+Gears:5
+
+Gears IV
+9,0,0,0,0||0,0,0,0,0||0,0,0,0,0||0,0,0,0,0||0,0,0,0,2
+Gears:7
+
+Power I
+2,0,10
+Generators:1
+
+Power II
 2,0,0,0,10
 Gears:1||Generators:1||Repeaters:1
 
-Light
+Power III
+0,0,0,0,10||-,-,0,-,-||2,0,0,0,0
+Gears:2||Generators:1||Repeaters:2
+
+Power IV
+10,0,0,0,0||0,0,0,0,0||0,0,0,0,0||0,0,0,0,0||0,0,0,0,2
+Gears:4||Generators:2||Repeaters:2
+
+Power V
+9,0,0,0,0,0,10||-,-,-,0,-,-,-||2,0,0,0,0,0,0
+Gears:7||Generators:1||Repeaters:1
+
+Light I
 2,0,0,0,7
 Generators:1||Lasers:1
 
-All The Things
+Light II
+7,0,0,0,0||0,0,0,0,0||0,0,0,0,0||0,0,0,0,0||2,0,0,0,7
+Generators:2||Lasers:2
+
+Light III
 0,0,0,0,7||2,0,0,0,0||0,0,0,0,7
 Generators:1||Lasers:2||Repeaters:2
 
-Split
+Light IV
+-,0,0,-,7||-,0,-,-,-||2,0,0,-,7||-,0,-,-,-||-,0,0,-,7
+Generators:1||Lasers:3||Repeaters:4
+
+Mirrors I
 7,0,0,0,7||0,0,0,0,0||0,0,0,0,0||0,0,2,0,0
 Generators:1||Lasers:1||Mirrors:1
 
-Workaround
-0,0,0,0,0||0,0,0,1,0||2,0,0,1,7||0,0,0,1,0||0,0,0,0,0
-Gears:2||Generators:1||Lasers:1||Repeaters:3
+Mirrors II
+0,0,0,0,7||0,0,0,0,0||0,0,0,0,0||0,0,0,0,0||2,0,0,0,0
+Generators:1||Lasers:1||Mirrors:2
+
+Mirrors III
+7,0,0,0,0||1,0,0,0,0||0,0,0,0,0||0,0,0,0,0||2,0,0,0,0
+Generators:1||Lasers:1||Mirrors:3
 
 Collect All Three
 0,0,0,0,0||0,0,9,0,0||2,0,0,1,7||0,0,0,10,0||0,0,0,0,0

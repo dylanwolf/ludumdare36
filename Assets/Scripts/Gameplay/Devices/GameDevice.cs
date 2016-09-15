@@ -25,6 +25,7 @@ public abstract class GameDevice : MonoBehaviour, IObjectPoolable {
     public bool HasSwitchedThisTick;
 
     public const int TileLayerMultiplier = 100;
+    public virtual int StackLayerMultiplier {  get { return 1; } }
 
     public virtual bool CanDelete { get { return true; } }
 
@@ -34,6 +35,7 @@ public abstract class GameDevice : MonoBehaviour, IObjectPoolable {
     protected List<GameDevice> SwitchedBy = new List<GameDevice>();
 
     protected SpriteRenderer _r;
+    int baseSortingOrder = 0;
 
     protected virtual void Start()
     {
@@ -54,8 +56,9 @@ public abstract class GameDevice : MonoBehaviour, IObjectPoolable {
 
     protected virtual void Update()
     {
+        baseSortingOrder = TileY * TileLayerMultiplier;
         if (_r != null)
-            _r.sortingOrder = TileY * TileLayerMultiplier;
+            _r.sortingOrder = baseSortingOrder;
     }
 
     public virtual void Disable()
@@ -104,11 +107,12 @@ public abstract class GameDevice : MonoBehaviour, IObjectPoolable {
 
     void OrderSprites()
     {
-        if (_r != null && ImageStack != null)
+        if (ImageStack != null)
         {
             for (int i = 0; i < ImageStack.Length; i++)
             {
-                ImageStack[i].sortingOrder = _r.sortingOrder + i + 1;
+                if (ImageStack[i] != null)
+                    ImageStack[i].sortingOrder = baseSortingOrder + ((i + 1) * StackLayerMultiplier);
             }
         }
     }

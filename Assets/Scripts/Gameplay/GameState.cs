@@ -18,7 +18,7 @@ public static class GameState {
     public static List<GameDevice> WinConditions = new List<GameDevice>();
     public static Dictionary<string, int> Parts = new Dictionary<string, int>();
 
-    public static int LevelIndex = 12;
+    public static int LevelIndex = 0;
 
     public static Level[] LEVELS = new Level[]
     {

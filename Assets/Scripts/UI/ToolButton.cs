@@ -12,6 +12,7 @@ public class ToolButton : MonoBehaviour {
 
     public Image IconRenderer;
     public Image SelectorRenderer;
+    public Graphic[] CountFrame;
     public Text[] CountText;
 
     int? lastCount = null;
@@ -45,36 +46,55 @@ public class ToolButton : MonoBehaviour {
         }
 
         // Apply to the controls
-        if (IconRenderer != null)
+        if (Visible)
         {
-            if (Visible)
+            gameObject.SetActive(true);
+
+            if (IconRenderer != null)
                 IconRenderer.sprite = Icon;
-            IconRenderer.enabled = Visible;
-        }
 
-        if (SelectorRenderer != null)
-        {
-            if (Visible && (PartName == GameState.EditorSelection))
-                SelectorRenderer.sprite = Selector;
-            SelectorRenderer.enabled = Visible && (PartName == GameState.EditorSelection);
-        }
-
-        if (CountText != null && (Count != lastCount || force))
-        {
-            countText = Count.HasValue ? Count.Value.ToString() : string.Empty;
-            for (int i = 0; i < CountText.Length; i++)
+            if (SelectorRenderer != null)
             {
-                if (Count.HasValue)
+                if (PartName == GameState.EditorSelection)
                 {
-                    CountText[i].text = countText;
-                    CountText[i].enabled = true;
+                    SelectorRenderer.sprite = Selector;
+                    SelectorRenderer.enabled = true;
                 }
                 else
                 {
-                    CountText[i].enabled = false;
+                    SelectorRenderer.enabled = false;
                 }
             }
-            lastCount = Count;
+
+            if (CountText != null && (Count != lastCount || force))
+            {
+                countText = Count.HasValue ? Count.Value.ToString() : string.Empty;
+                for (int i = 0; i < CountText.Length; i++)
+                {
+                    if (Count.HasValue)
+                    {
+                        CountText[i].text = countText;
+                        CountText[i].enabled = true;
+                    }
+                    else
+                    {
+                        CountText[i].enabled = false;
+                    }
+                }
+
+                if (CountFrame != null)
+                {
+                    for (int i = 0; i < CountFrame.Length; i++)
+                    {
+                        CountFrame[i].enabled = Count.HasValue;
+                    }
+                }
+                lastCount = Count;
+            }
+        }
+        else
+        {
+            gameObject.SetActive(false);
         }
     }
 

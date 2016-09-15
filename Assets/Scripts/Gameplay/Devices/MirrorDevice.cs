@@ -8,8 +8,13 @@ public class MirrorDevice : GameDevice {
 
     public Transform BeamAttach;
 
-    public Sprite ActiveSprite;
-    public Sprite InactiveSprite;
+    public override int StackLayerMultiplier
+    {
+        get
+        {
+            return 10;
+        }
+    }
 
     protected override bool CanLight
     {
@@ -65,9 +70,6 @@ public class MirrorDevice : GameDevice {
 
     protected override void CleanupAfterTickInternal()
     {
-        if (_r != null)
-            _r.sprite = (PoweredBy.Count > 0) ? ActiveSprite : InactiveSprite;
-
         for (int i = 0; i < beams.Length; i++)
         {
             UpdateBeam(i);
@@ -103,7 +105,7 @@ public class MirrorDevice : GameDevice {
         }
     }
 
-    static readonly int[] beamLayerOffsets = new int[] { 30, 10, 20, 20 };
+    static readonly int[] beamLayerOffsets = new int[] { 20, 20, 0, 30 };
 
     protected override void ApplyLightInternal(GameDevice device)
     {

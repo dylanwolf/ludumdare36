@@ -230,6 +230,11 @@ public class BeamDevice : GameDevice {
                 BlockLength += Time.deltaTime * Speed;
             }
         }
+        else
+        {
+            if (BlockLength == 0)
+                BlockLength = 0.5f;
+        }
 
 
         // Pulse laser if it's in its final state
@@ -247,6 +252,7 @@ public class BeamDevice : GameDevice {
                 );
         }
 
+        Debug.Log(BlockLength);
         SetScale(BlockLength);
     }
 }

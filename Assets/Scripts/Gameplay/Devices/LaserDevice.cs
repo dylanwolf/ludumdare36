@@ -9,6 +9,14 @@ public class LaserDevice : GameDevice {
 
     public Transform BeamAttach;
 
+    public override int StackLayerMultiplier
+    {
+        get
+        {
+            return 10;
+        }
+    }
+
     protected override bool CanPower
     {
         get { return true; }
@@ -98,7 +106,7 @@ public class LaserDevice : GameDevice {
         }
     }
 
-    static readonly int[] beamLayerOffsets = new int[] { 30, 10, 20, 20 };
+    static readonly int[] beamLayerOffsets = new int[] { 20, 20, 0, 30 };
 
     protected override void ApplyPowerInternal(GameDevice device)
     {

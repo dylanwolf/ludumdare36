@@ -8,7 +8,8 @@ public class ToolPanel : MonoBehaviour {
     public Text[] LevelText;
     public ToolButton ButtonPrefab;
     public Transform ButtonPanel;
-    public float ButtonWidth = 0.1f;
+    public float ButtonOffsetX;
+    public float ButtonOffsetY;
     public ToolButtonConfig[] Config;
     public bool CollapseHidden;
 
@@ -80,11 +81,17 @@ public class ToolPanel : MonoBehaviour {
     {
         RectTransform btnTrans = (RectTransform)btn.transform;
         Vector2 tmp = btnTrans.anchorMin;
-        tmp.x = index * ButtonWidth;
+        if (ButtonOffsetX > 0)
+            tmp.x = index * ButtonOffsetX;
+        if (ButtonOffsetY > 0)
+            tmp.y = 1 - ((index + 1) * ButtonOffsetY);
         btnTrans.anchorMin = tmp;
 
         tmp = btnTrans.anchorMax;
-        tmp.x = (index + 1) * ButtonWidth;
+        if (ButtonOffsetX > 0)
+            tmp.x = (index + 1) * ButtonOffsetX;
+        if (ButtonOffsetY > 0)
+            tmp.y = 1 - (index * ButtonOffsetY);
         btnTrans.anchorMax = tmp;
 
         btnTrans.offsetMax = btnTrans.offsetMin = Vector2.zero;

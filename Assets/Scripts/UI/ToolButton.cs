@@ -67,6 +67,7 @@ public class ToolButton : MonoBehaviour {
                 if (Count.HasValue)
                 {
                     CountText[i].text = countText;
+                    CountText[i].enabled = true;
                 }
                 else
                 {
@@ -77,8 +78,23 @@ public class ToolButton : MonoBehaviour {
         }
     }
 
+    void SelectTool(string toolName, Graphic icon)
+    {
+        if (GameState.EditorSelection != toolName)
+        {
+            GameEngine.Current.SelectTool(toolName);
+            SelectorRenderer.enabled = true;
+            SelectorRenderer.transform.position = icon.transform.position;
+        }
+        else
+        {
+            GameEngine.Current.SelectTool(null);
+            SelectorRenderer.enabled = false;
+        }
+    }
+
     public void ButtonClick()
     {
-        return;
+        SelectTool(PartName, IconRenderer);
     }
 }

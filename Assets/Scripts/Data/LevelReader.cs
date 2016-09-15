@@ -8,7 +8,6 @@ public static class LevelReader {
     public static Level[] Load(string filename)
     {
         var targetFile = Resources.Load<TextAsset>(filename);
-        Debug.Log(targetFile.text);
         return Parse(targetFile.text);
     }
 
@@ -27,16 +26,25 @@ public static class LevelReader {
                 continue;
             }
 
-            Level l = new Level();
-            l.Name = lines[index];
-            l.Board = ParseBoard(lines[index + 1]);
-            l.Parts = ParseParts(lines[index + 2]);
-            if (index + 3 < lines.Length)
-                l.Switches = ParseSwitches(lines[index + 3]);
-
-            levels.Add(l);
-
-            index += 4;
+            try
+            {
+                Level l = new Level();
+                l.Name = lines[index].Trim();
+                index++;
+                l.Board = ParseBoard(lines[index]);
+                index++;
+                l.Parts = ParseParts(lines[index]);
+                index++;
+                if (index < lines.Length)
+                    l.Switches = ParseSwitches(lines[index].Trim());
+                index++;
+                levels.Add(l);
+            }
+            catch (Exception ex)
+            {
+                Debug.Log("Error parsing level file on line " + (index + 1).ToString());
+                throw ex;
+            }
         }
 
 
